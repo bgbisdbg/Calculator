@@ -44,6 +44,11 @@ INSTALLED_APPS = [
     'calculator',
 ]
 ```
+4. Так же добовляем переменную, чтобы хранить данные в сессии 
+
+```
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+```
 
 **Второй шаг***
 
