@@ -13,14 +13,20 @@
         <h1>Calculator</h1>
         <form method="post" action="{% url 'calculate' %}">
             {% csrf_token %}
-            <input type="text" name="expression" placeholder="Enter expression">
+            <input type="text" name="expression" placeholder="Enter expression" required>
             <button type="submit">Calculate</button>
         </form>
         {% if error %}
-            <div id="error">{{ error }}</div>
+            <div class="error">{{ error }}</div>
         {% endif %}
+        <h2>Result</h2>
+        <div class="result">
+            {% if result %}
+                <p>{{ result }}</p>
+            {% endif %}
+        </div>
         <h2>History</h2>
-        <div id="history">
+        <div class="history">
             {% for item in history %}
                 <p>{{ item.0 }} = {{ item.1 }}</p>
             {% endfor %}
