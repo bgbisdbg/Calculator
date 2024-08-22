@@ -52,7 +52,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
 **Второй шаг***
 
-1. В файле server/calculator/views.py пишем логику для калькулятора, так как в задании указано, что пользователь вводит строку, мы используем внутренний метод python eval (позволяет выполнять математические расчёты, которые были получены в виде строки.)
+1. В файле server/calculator/config_calculator.py пишем логику для калькулятора
 
 **Третий шаг**
 
