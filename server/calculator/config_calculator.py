@@ -3,12 +3,12 @@ import re
 
 class ExpressionCalculation:
     def __init__(self):
-        self.precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '(': 0}  # Определение приоритетов операторов
+        self.precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3, '(': 0}  # Определение приоритетов операторов
 
     def split_expression(self, expression):  # Функция для разделения строки
         expression = expression.replace(' ', '')
         # С помощью регулярного выражения разбиваем строку по операторам.
-        tokens = re.findall(r'\d+|\+|\-|\*|\/|\(|\)', expression)
+        tokens = re.findall(r'\d+|\+|\-|\*|\/|\^|\(|\)', expression)
         new_tokens = []
         for i in range(len(tokens)):  # Цикл для определения неявного умножения
             if tokens[i] == '(' and i > 0 and (tokens[i - 1].isdigit() or tokens[i - 1] == ')'):
@@ -74,6 +74,8 @@ class ExpressionCalculation:
             if b == 0:
                 raise ValueError("Делить на ноль нельзя")
             return a / b
+        elif op == '^':
+            return a ** b
 
     def evaluate(self, expression):
         try:
@@ -83,5 +85,3 @@ class ExpressionCalculation:
             return result
         except Exception as e:
             return str(e)
-
-
