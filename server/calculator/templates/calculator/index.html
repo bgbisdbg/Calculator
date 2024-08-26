@@ -13,7 +13,7 @@
         <h1>Calculator</h1>
         <form method="post" action="{% url 'calculate' %}">
             {% csrf_token %}
-            <input type="text" name="expression" placeholder="Enter expression" required>
+            <input type="text" name="expression" placeholder="Enter expression" required autocomplete="off">
             <button type="submit">Calculate</button>
         </form>
         {% if error %}
