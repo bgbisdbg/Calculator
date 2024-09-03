@@ -8,7 +8,7 @@ class ExpressionCalculation:
     def split_expression(self, expression):  # Функция для разделения строки
         expression = expression.replace(' ', '')
         # С помощью регулярного выражения разбиваем строку по операторам.
-        tokens = re.findall(r'\d+|\+|\-|\*|\/|\^|\(|\)', expression)
+        tokens = re.findall(r'\d+\.\d+|\d+|\+|\-|\*|\/|\^|\(|\)', expression)
         new_tokens = []
         for i in range(len(tokens)):  # Цикл для определения неявного умножения
             if tokens[i] == '(' and i > 0 and (tokens[i - 1].isdigit() or tokens[i - 1] == ')'):
@@ -34,7 +34,7 @@ class ExpressionCalculation:
 
         i = 0
         while i < len(tokens):
-            if tokens[i].isdigit():  # Если текущий токен — число, добавляем его в стек чисел
+            if tokens[i].replace('.', '', 1).isdigit():  # Если текущий токен — число, добавляем его в стек чисел
                 numbers.append(float(tokens[i]))
             elif tokens[i] == '(':  # Если текущий токен — открывающая скобка, добавляем её в стек операторов
                 operators.append(tokens[i])
@@ -82,6 +82,6 @@ class ExpressionCalculation:
             tokens = self.split_expression(expression)
             self.validate_expression(tokens)
             result = self.conversion_tokens(tokens)
-            return result
+            return round(result, 10) # Использование функции round позволяет выводить числа с плавающей точкой
         except Exception as e:
             return str(e)

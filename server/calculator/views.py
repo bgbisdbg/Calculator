@@ -3,6 +3,7 @@ from calculator.config_calculator import ExpressionCalculation
 
 calculation = ExpressionCalculation()
 
+
 def index(request):
     history = request.session.get('history', [])
     result = request.session.get('result', None)
@@ -25,3 +26,8 @@ def calculate(request):
     return redirect('index')
 
 
+def clear_history(request):
+    if request.method == 'POST':
+        request.session['history'] = []
+        request.session['result'] = None
+    return redirect('index')

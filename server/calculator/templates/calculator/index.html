@@ -16,12 +16,16 @@
             <input type="text" name="expression" placeholder="Enter expression" required autocomplete="off">
             <button type="submit">Calculate</button>
         </form>
+        <form method="post" action="{% url 'clear_history' %}">
+            {% csrf_token %}
+            <button type="submit">Clear History</button>
+        </form>
         {% if error %}
             <div class="error">{{ error }}</div>
         {% endif %}
         <h2>Result</h2>
         <div class="result">
-            {% if result %}
+            {% if result is not None %}
                 <p>{{ result }}</p>
             {% endif %}
         </div>
