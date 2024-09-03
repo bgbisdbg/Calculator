@@ -1,5 +1,4 @@
 import re
-
 from django.shortcuts import render, redirect
 from calculator.config_calculator import ExpressionCalculation
 
@@ -24,6 +23,8 @@ def calculate(request):
 
         try:
             result = calculation.evaluate(expression)
+            if result is None:
+                raise ValueError("Укажите корректное выражение")
             history = request.session.get('history', [])
             history.append((expression, result))
             request.session['history'] = history
@@ -39,6 +40,7 @@ def calculate(request):
             return render(request, 'calculator/index.html', {'error': error, 'history': history})
 
     return redirect('index')
+
 
 def clear_history(request):
     if request.method == 'POST':
