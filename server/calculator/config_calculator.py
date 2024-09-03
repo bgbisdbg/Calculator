@@ -10,10 +10,15 @@ class ExpressionCalculation:
         # С помощью регулярного выражения разбиваем строку по операторам.
         tokens = re.findall(r'\d+\.\d+|\d+|\+|\-|\*|\/|\^|\(|\)', expression)
         new_tokens = []
-        for i in range(len(tokens)):  # Цикл для определения неявного умножения
-            if tokens[i] == '(' and i > 0 and (tokens[i - 1].isdigit() or tokens[i - 1] == ')'):
-                new_tokens.append('*')
-            new_tokens.append(tokens[i])
+        i = 0
+        while i < len(tokens):
+            if tokens[i] == '-' and (i == 0 or tokens[i-1] in '(-+'):
+                # Если минус обозначает отрицательное число
+                new_tokens.append(tokens[i] + tokens[i+1])
+                i += 2
+            else:
+                new_tokens.append(tokens[i])
+                i += 1
         return new_tokens
 
     def validate_expression(self, tokens): # Добавил функцию для проверки на наличее скобок в выражение
@@ -34,11 +39,13 @@ class ExpressionCalculation:
 
         i = 0
         while i < len(tokens):
-            if tokens[i].replace('.', '', 1).isdigit():  # Если текущий токен — число, добавляем его в стек чисел
+            if tokens[i].replace('.', '', 1).lstrip(
+                    '-').isdigit():  # Если текущий токен — число, добавляем его в стек чисел
                 numbers.append(float(tokens[i]))
             elif tokens[i] == '(':  # Если текущий токен — открывающая скобка, добавляем её в стек операторов
                 operators.append(tokens[i])
-            elif tokens[i] == ')':  # Если текущий токен — закрывающая скобка, выполняем все операции до открывающей скобки
+            elif tokens[
+                i] == ')':  # Если текущий токен — закрывающая скобка, выполняем все операции до открывающей скобки
                 while operators and operators[-1] != '(':
                     self.apply_top_operator(numbers, operators)
                 operators.pop()
