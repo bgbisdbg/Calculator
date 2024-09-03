@@ -1,14 +1,14 @@
 import re
-
+from collections import deque
 
 class ExpressionCalculation:
     def __init__(self):
         self.precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3, '(': 0}  # Определение приоритетов операторов
 
-    def split_expression(self, expression):  # Функция для разделения строки
+    def split_expression(self, expression):
         expression = expression.replace(' ', '')
-        # С помощью регулярного выражения разбиваем строку по операторам.
-        tokens = re.findall(r'\d+\.\d+|\d+|\+|\-|\*|\/|\^|\(|\)', expression)
+        # С помощью регулярного выражения разбиваем строку по операторам, учитывая отрицательные числа и неявное умножение
+        tokens = re.findall(r'\d+\.\d+|\d+|[\+\-\*\/\^\(\)]', expression)
         new_tokens = []
         i = 0
         while i < len(tokens):
@@ -16,12 +16,22 @@ class ExpressionCalculation:
                 # Если минус обозначает отрицательное число
                 new_tokens.append(tokens[i] + tokens[i+1])
                 i += 2
+            elif tokens[i].isdigit() and i + 1 < len(tokens) and tokens[i+1] == '(':
+                # Неявное умножение: число перед открывающей скобкой
+                new_tokens.append(tokens[i])
+                new_tokens.append('*')
+                i += 1
+            elif tokens[i] == ')' and i + 1 < len(tokens) and tokens[i+1].isdigit():
+                # Неявное умножение: закрывающая скобка перед числом
+                new_tokens.append(tokens[i])
+                new_tokens.append('*')
+                i += 1
             else:
                 new_tokens.append(tokens[i])
                 i += 1
         return new_tokens
 
-    def validate_expression(self, tokens): # Добавил функцию для проверки на наличее скобок в выражение
+    def validate_expression(self, tokens):
         stack = []
         for token in tokens:
             if token == '(':
@@ -34,18 +44,16 @@ class ExpressionCalculation:
             raise ValueError("Некорректное выражение: несогласованные скобки")
 
     def conversion_tokens(self, tokens):
-        numbers = []
-        operators = []
+        numbers = deque()
+        operators = deque()
 
         i = 0
         while i < len(tokens):
-            if tokens[i].replace('.', '', 1).lstrip(
-                    '-').isdigit():  # Если текущий токен — число, добавляем его в стек чисел
+            if tokens[i].replace('.', '', 1).lstrip('-').isdigit():  # Если текущий токен — число, добавляем его в стек чисел
                 numbers.append(float(tokens[i]))
             elif tokens[i] == '(':  # Если текущий токен — открывающая скобка, добавляем её в стек операторов
                 operators.append(tokens[i])
-            elif tokens[
-                i] == ')':  # Если текущий токен — закрывающая скобка, выполняем все операции до открывающей скобки
+            elif tokens[i] == ')':  # Если текущий токен — закрывающая скобка, выполняем все операции до открывающей скобки
                 while operators and operators[-1] != '(':
                     self.apply_top_operator(numbers, operators)
                 operators.pop()
@@ -64,7 +72,7 @@ class ExpressionCalculation:
 
     def apply_top_operator(self, numbers, operators):  # Выполняем операции
         if len(numbers) < 2:
-            raise ValueError("Некорректное выражение: недостаточно операндов для операции") # Добавил вывод если выражение не полное
+            raise ValueError("Некорректное выражение: недостаточно операндов для операции")
         b = numbers.pop()
         a = numbers.pop()
         op = operators.pop()
@@ -89,6 +97,6 @@ class ExpressionCalculation:
             tokens = self.split_expression(expression)
             self.validate_expression(tokens)
             result = self.conversion_tokens(tokens)
-            return round(result, 10) # Использование функции round позволяет выводить числа с плавающей точкой
+            return round(result, 10)  # Использование функции round позволяет выводить числа с плавающей точкой
         except Exception as e:
             return str(e)
