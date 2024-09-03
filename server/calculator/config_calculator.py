@@ -29,12 +29,6 @@ class ExpressionCalculation:
             else:
                 new_tokens.append(tokens[i])
                 i += 1
-
-        # Проверка на недопустимые символы
-        for token in new_tokens:
-            if token not in self.precedence and not token.replace('.', '', 1).lstrip('-').isdigit():
-                raise ValueError('Некорректное выражение: недопустимые символы')
-
         return new_tokens
 
     def validate_expression(self, tokens):
@@ -102,7 +96,7 @@ class ExpressionCalculation:
 
     def evaluate(self, expression):
         try:
-            expression = expression.replace(',', '.')  # если была введена ',' вместо точки
+            expression = expression.replace(',', '.')  # еси была введена ',' вместо точки
             tokens = self.split_expression(expression)
             self.validate_expression(tokens)
             result = self.conversion_tokens(tokens)
