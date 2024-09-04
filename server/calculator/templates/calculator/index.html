@@ -1,4 +1,4 @@
-{% load static %}
+ {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,30 +10,65 @@
 </head>
 <body>
     <div class="container">
-        <h1>Calculator</h1>
-        <form method="post" action="{% url 'calculate' %}">
-            {% csrf_token %}
-            <input type="text" name="expression" placeholder="Enter expression" required autocomplete="off">
-            <button type="submit">Calculate</button>
-        </form>
-        <form method="post" action="{% url 'clear_history' %}">
-            {% csrf_token %}
-            <button type="submit">Clear History</button>
-        </form>
-        {% if error %}
-            <div class="error">{{ error }}</div>
-        {% endif %}
-        <h2>Result</h2>
-        <div class="result">
-            {% if result is not None %}
-                <p>{{ result }}</p>
-            {% endif %}
+        <div class="sidebar">
+            <h2>Supported Examples</h2>
+            <table>
+                <tr>
+                    <td>1 + 2</td>
+                    <td>= Addition</td>
+                </tr>
+                <tr>
+                    <td>3 - 4</td>
+                    <td>= Subtraction</td>
+                </tr>
+                <tr>
+                    <td>5 * 2</td>
+                    <td>= Multiplication</td>
+                </tr>
+                <tr>
+                    <td>6 / 3</td>
+                    <td>= Division</td>
+                </tr>
+                <tr>
+                    <td>2 ^ 3</td>
+                    <td>= Exponentiation</td>
+                </tr>
+                <tr>
+                    <td>(2 + 3)4</td>
+                    <td>= Not explicit multiplication</td>
+                </tr>
+                <tr>
+                    <td>12.2+2</td>
+                    <td>= real numbers</td>
+                </tr>
+            </table>
         </div>
-        <h2>History</h2>
-        <div class="history">
-            {% for item in history %}
-                <p>{{ item.0 }} = {{ item.1 }}</p>
-            {% endfor %}
+        <div class="main-content">
+            <h1>Calculator</h1>
+            <form method="post" action="{% url 'calculate' %}">
+                {% csrf_token %}
+                <input type="text" name="expression" placeholder="Enter expression" required autocomplete="off">
+                <button type="submit">Calculate</button>
+            </form>
+            <form method="post" action="{% url 'clear_history' %}">
+                {% csrf_token %}
+                <button type="submit">Clear History</button>
+            </form>
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+            <h2>Result</h2>
+            <div class="result">
+                {% if result is not None %}
+                    <p>{{ result }}</p>
+                {% endif %}
+            </div>
+            <h2>History</h2>
+            <div class="history">
+                {% for item in history %}
+                    <p>{{ item.0 }} = {{ item.1 }}</p>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </body>

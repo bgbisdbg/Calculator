@@ -10,12 +10,38 @@ body {
 }
 
 .container {
+    display: flex;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 600px;
     text-align: center;
+}
+
+.sidebar {
+    width: 30%;
+    padding-right: 20px;
+    border-right: 1px solid #ccc;
+}
+
+.sidebar h2 {
+    margin-bottom: 10px;
+}
+
+.sidebar table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.sidebar td {
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+
+.main-content {
+    width: 70%;
+    padding-left: 20px;
 }
 
 h1 {
@@ -43,12 +69,12 @@ button:hover {
     background-color: #0056b3;
 }
 
-#error {
+.error {
     color: red;
     margin-top: 10px;
 }
 
-#history {
+.history {
     margin-top: 20px;
     text-align: left;
 }

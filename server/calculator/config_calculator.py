@@ -5,10 +5,15 @@ class ExpressionCalculation:
     def __init__(self):
         self.precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3, '(': 0}  # Определение приоритетов операторов
 
+
     def split_expression(self, expression):
         expression = expression.replace(' ', '')
         # С помощью регулярного выражения разбиваем строку по операторам, учитывая отрицательные числа и неявное умножение
         tokens = re.findall(r'\d+\.\d+|\d+|[\+\-\*\/\^\(\)]', expression)
+
+        if '=' in expression:
+            raise ValueError('Некорректное выражение: недопустимые символы')
+
         new_tokens = []
         i = 0
         while i < len(tokens):
